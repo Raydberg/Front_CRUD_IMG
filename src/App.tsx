@@ -1,11 +1,18 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HomePage } from "./pages/HomePage";
+import ProductForm from "./components/ProductForm";
+import EditProductPage from "./pages/EditProductPage";
 function App() {
-
   return (
-    <>
-      <h1>Hola React</h1>
-    </>
-  )
+    <BrowserRouter>
+     <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/new-product" element={<ProductForm />} />
+        <Route path="/edit-product/:id" element={<EditProductPage />} /> 
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

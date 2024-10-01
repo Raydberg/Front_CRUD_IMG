@@ -1,42 +1,42 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getProducts } from '../service/products.service';
-
-interface Product {
-    id: number;
-    productName?: string;
-    price: number;
-    photos: string;
-}
-
-const getPhotosImagePath = (id: number, photo: string) => {
-    const url = `http://localhost:8080/product-photos/${id}/${encodeURIComponent(photo)}`;
-    console.log('Image URL:', url); // Verifica la URL generada
-    return url;
-};
+import CardProduct from './CardProduct';
 
 const ProductList: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        getProducts().then(response => {
-            setProducts(response.data);
-        }).catch(error => {
-            console.error('There was an error fetching the products!', error);
-        });
+        getProducts()
+            .then((response) => {
+                setProducts(response.data);
+            })
+            .catch((error) => {
+                console.error("There was an error fetching the products!", error);
+            });
     }, []);
 
+    const handleDeleteProduct = (id: number) => {
+        setProducts(products.filter(product => product.id !== id));
+    };
+
     return (
-        <div>
+        <div className="">
+            <button className="btn btn-outline-success" onClick={() => navigate('/new-product')}>
+                Agregar nuevo producto
+            </button>
             <h1>Product List</h1>
-            <ul>
-                {products.map(product => (
-                    <li key={product.id}>
-                        <h2>{product.productName}</h2>
-                        <p>{product.price}</p>
-                        {product.photos && (
-                            <img src={getPhotosImagePath(product.id, product.photos)} alt={product.name} width="150" />
-                        )}
-                    </li>
+            <ul className="d-flex ">
+                {products.map((product) => (
+                    <CardProduct
+                        key={product.id}
+                        id={product.id}
+                        productName={product.productName}
+                        price={product.price}
+                        photos={product.photos}
+                        onDelete={handleDeleteProduct}
+                    />
                 ))}
             </ul>
         </div>

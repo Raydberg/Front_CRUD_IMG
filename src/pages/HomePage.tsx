@@ -1,9 +1,9 @@
-import { Button } from "react-bootstrap";
+import ProductList from "../components/ProductList";
 
 export const HomePage = () => {
   return (
     <div>
-      <Button />
+      <ProductList/>
     </div>
   );
 };
